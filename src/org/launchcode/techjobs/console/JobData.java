@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -54,6 +55,46 @@ public class JobData {
         return allJobs;
     }
 
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        value = value.toLowerCase();
+
+        for (HashMap<String, String> job : allJobs) {
+            for (Map.Entry<String, String> row : job.entrySet()) {
+                String rowValue = row.getValue();
+                rowValue = rowValue.toLowerCase();
+                if (rowValue.contains(value)) {
+                    jobs.add(job);
+                    break;
+                }
+            }
+
+//            for (Map.Entry<String, String> record : row.entrySet()) {
+//                if (row.entrySet().contains(value)) {
+//                    jobs.add(row);
+//                }
+//            }
+        }
+
+        //        if (someJobs.size() != 0) {
+//            for (HashMap<String, String> records : someJobs) { //I'm a HashMap containing one row. I think
+//                System.out.println("*****");
+//                for (Map.Entry<String, String> record : records.entrySet()) {  //I'm not even sure why this needs to be here
+//                    System.out.println(record.getKey() + ": " + record.getValue());
+//                }
+//                System.out.println("*****");
+//            }
+//        } else {
+//            System.out.println("\nNo results");
+
+        return jobs;
+    }
+
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
@@ -75,6 +116,8 @@ public class JobData {
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            aValue = aValue.toLowerCase();
+            value = value.toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
